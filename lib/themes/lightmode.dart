@@ -4,10 +4,10 @@ ThemeData lightMode = ThemeData(
     brightness: Brightness.light,
     //primarySwatch: Colors.deepPurple,
     colorScheme: ColorScheme.light(
-      primary: Colors.deepPurple.shade300,
-      secondary: Colors.deepPurpleAccent.shade700,
+      primary: const Color(0xFF00c7e7),
+      secondary: Colors.blueAccent.shade700,
       surface: Colors.white,
-      inversePrimary: Colors.deepPurple.shade800,
+      inversePrimary: Colors.blue.shade800,
     ),
     textTheme: ThemeData.light()
         .textTheme

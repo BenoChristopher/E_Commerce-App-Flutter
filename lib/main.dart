@@ -1,22 +1,44 @@
 import 'package:flutter/material.dart';
+import 'package:mca_project/auth/auth.dart';
+import 'package:mca_project/pages/loginpage.dart';
+import 'package:mca_project/pages/registerpage.dart';
+import 'package:mca_project/themes/darktheme.dart';
 import 'package:mca_project/themes/lightmode.dart';
-
-import 'pages/loginpage.dart';
 import 'pages/welcomepage.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: MyWelComePage(),
-        theme: lightMode);
+      debugShowCheckedModeBanner: false,
+      home: MyWelComePage(),
+      theme: lightMode,
+      darkTheme: darkTheme,
+      themeMode: ThemeMode.light,
+      // routes: {
+      //   "/loginpage": (context) => MyLoginPage(
+      //         onToggle: () {
+      //           Navigator.pushNamed(context, '/registerpage');
+      //         },
+      //       ),
+      //   "/registerpage": (context) => MyRegisterPage(
+      //         onToggle: () {
+      //           Navigator.pushNamed(context, '/loginpage');
+      //         },
+      //       ),
+      // },
+    );
   }
 }
