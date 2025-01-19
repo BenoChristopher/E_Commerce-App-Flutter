@@ -1,6 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
+import 'package:mca_project/provider/userprovider.dart';
+import 'package:provider/provider.dart';
 
 import '../components/textfield.dart';
 import '../helper/helperfunction.dart';
@@ -30,38 +33,6 @@ class _MyRegisterPageState extends State<MyRegisterPage> {
 
   final TextEditingController confirmpasscontroller = TextEditingController();
 
-  // void registerUser() async {
-  //   //show loading circle
-  //   showDialog(
-  //       context: context,
-  //       builder: (context) {
-  //         return Center(
-  //           child: CircularProgressIndicator(),
-  //         );
-  //       });
-
-  //   //password match
-  //   if (passcontroller.text != confirmpasscontroller) {
-  //     Navigator.pop(context);
-
-  //     //display error message
-  //     displayMessageToUser("Password doesn't match", context);
-  //   }
-
-  //   try {
-  //     //create a user
-  //     UserCredential? usercredential = await FirebaseAuth.instance
-  //         .createUserWithEmailAndPassword(
-  //             email: emailcontroller.text, password: passcontroller.text);
-
-  //     Navigator.pop(context);
-  //   } on FirebaseAuthException catch (e) {
-  //     Navigator.pop(context);
-
-  //     displayMessageToUser(e.code, context);
-  //   }
-  // }
-
   void testFirebaseConnection() async {
     try {
       await FirebaseAuth.instance.signInAnonymously();
@@ -71,46 +42,7 @@ class _MyRegisterPageState extends State<MyRegisterPage> {
     }
   }
 
-  // void registerUser() async {
-  //   if (usernamecontroller.text.isEmpty ||
-  //       emailcontroller.text.isEmpty ||
-  //       passcontroller.text.isEmpty ||
-  //       confirmpasscontroller.text.isEmpty) {
-  //     displayMessageToUser("All fields are required", context);
-  //     return;
-  //   }
-
-  //   if (passcontroller.text != confirmpasscontroller.text) {
-  //     displayMessageToUser("Passwords don't match", context);
-  //     return;
-  //   }
-
-  //   // Show loading
-  //   showDialog(
-  //       context: context,
-  //       builder: (context) {
-  //         return Center(
-  //           child: CircularProgressIndicator(),
-  //         );
-  //       });
-
-  //   try {
-  //     // Create user
-  //     UserCredential userCredential =
-  //         await FirebaseAuth.instance.createUserWithEmailAndPassword(
-  //       email: emailcontroller.text.trim(),
-  //       password: passcontroller.text.trim(),
-  //     );
-
-  //     Navigator.pop(context); // Close loading dialog
-  //     displayMessageToUser("Registration successful!", context);
-  //   } on FirebaseAuthException catch (e) {
-  //     Navigator.pop(context); // Close loading dialog
-  //     displayMessageToUser(e.message ?? "Error occurred", context);
-  //   }
-  // }
-
-  void registerUser() async {
+  void registerUser(BuildContext context, UserProvider userprovider) async {
     // Validate input
     if (usernamecontroller.text.isEmpty ||
         emailcontroller.text.isEmpty ||
@@ -129,7 +61,8 @@ class _MyRegisterPageState extends State<MyRegisterPage> {
     // Show loading
     showDialog(
       context: context,
-      builder: (context) => Center(child: CircularProgressIndicator()),
+      builder: (context) => Center(
+          child: Lottie.asset('asset/images/Animation - 1736521859654.json')),
     );
 
     try {
@@ -140,11 +73,19 @@ class _MyRegisterPageState extends State<MyRegisterPage> {
         password: passcontroller.text.trim(),
       );
 
-      // Dismiss loading dialog
+      //get user name step 1
+      // Save the username to Firebase Auth
+      await userCredential.user!
+          .updateDisplayName(usernamecontroller.text.trim());
+
+      // Update the username in the UserProvider
+      userprovider
+          .setUsername(usernamecontroller.text.trim()); // Fixed usage here
       Navigator.pop(context);
 
       // Success message
       displayMessageToUser("Registration successful!", context);
+      Navigator.pop(context);
     } on FirebaseAuthException catch (e) {
       // Dismiss loading dialog
       Navigator.pop(context);
@@ -159,15 +100,18 @@ class _MyRegisterPageState extends State<MyRegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 36),
+          padding: EdgeInsets.only(
+            left: 36,
+            right: 36,
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -190,9 +134,9 @@ class _MyRegisterPageState extends State<MyRegisterPage> {
                     ),
                   ],
                 ),
-                // SizedBox(
-                //   height: 133,
-                // ),
+                SizedBox(
+                  height: 230,
+                ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -210,7 +154,7 @@ class _MyRegisterPageState extends State<MyRegisterPage> {
                       hintText: 'Enter you username',
                       obsecurText: false,
                       controller: usernamecontroller,
-                      icon: Icon(Icons.mail),
+                      icon: Icon(Icons.account_circle_rounded),
                     ),
                     SizedBox(
                       height: 19,
@@ -255,7 +199,11 @@ class _MyRegisterPageState extends State<MyRegisterPage> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(4)),
                         color: primecolor,
-                        onPressed: registerUser,
+                        onPressed: () {
+                          final userProvider =
+                              Provider.of<UserProvider>(context, listen: false);
+                          registerUser(context, userProvider);
+                        },
                         child: Text(
                           'SignUp',
                           style: GoogleFonts.blinker(
@@ -285,9 +233,9 @@ class _MyRegisterPageState extends State<MyRegisterPage> {
                         ),
                       ],
                     ),
-                    // SizedBox(
-                    //   height: 133,
-                    // ),
+                    SizedBox(
+                      height: 35,
+                    ),
                   ],
                 )
               ],

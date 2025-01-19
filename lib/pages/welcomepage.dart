@@ -50,7 +50,7 @@ class _MyWelComePageState extends State<MyWelComePage>
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(height: 230, child: Image.asset('asset/bag.png')),
+            SizedBox(height: 230, child: Image.asset('asset/images/bag.png')),
             SizedBox(height: 37),
             Text(
               'welcome to',
@@ -87,25 +87,6 @@ class _MyWelComePageState extends State<MyWelComePage>
             SizedBox(
               height: 47,
             ),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            //   children: [
-            //     MyButton(
-            //       buttonname: 'Get Started',
-            //       color: primecolor,
-            //       onPressed: () {
-            //         Navigator.pushNamed(context, '/registerpage');
-            //       },
-            //     ),
-            //     MyButton(
-            //       buttonname: 'Login',
-            //       color: Colors.white,
-            //       onPressed: () {
-            //         Navigator.pushNamed(context, '/loginpage');
-            //       },
-            //     ),
-            //   ],
-            // )
           ],
         ),
       ),
