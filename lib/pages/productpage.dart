@@ -23,7 +23,7 @@ class ProductPage extends StatelessWidget {
                   return Text(
                     'Hello, ${userProvider.userName}',
                     style: GoogleFonts.inter(
-                      fontSize: 24,
+                      fontSize: 20,
                       color: Colors.black,
                       fontWeight: FontWeight.w600,
                     ),

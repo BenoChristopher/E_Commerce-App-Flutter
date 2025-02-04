@@ -1,13 +1,25 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});
 
-  void logoutUser() {
+  // void logoutUser() {
+  //   FirebaseAuth.instance.signOut();
+  // }
+
+  Future<void> signOutUser() async {
+  try {
     FirebaseAuth.instance.signOut();
+    await GoogleSignIn().signOut(); // Sign out from Google
+    await FirebaseAuth.instance.signOut(); // Sign out from Firebase
+    print("User signed out successfully");
+  } catch (e) {
+    print("Error signing out: $e");
   }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -47,11 +59,11 @@ class MyDrawer extends StatelessWidget {
           ]),
         ),
         ListTile(
-          onTap: logoutUser,
+          onTap: signOutUser,
           title: Text('Logout'),
           leading: IconButton(
             icon: Icon(Icons.logout),
-            onPressed: logoutUser,
+            onPressed: signOutUser,
           ),
         ),
       ],

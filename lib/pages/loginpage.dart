@@ -2,12 +2,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mca_project/auth/authmethods.dart';
 import 'package:mca_project/components/textfield.dart';
 import 'package:mca_project/helper/helperfunction.dart';
 import 'package:lottie/lottie.dart';
 
+
 class MyLoginPage extends StatefulWidget {
+
   final VoidCallback onToggle;
+  
   MyLoginPage({
     super.key,
     required this.onToggle,
@@ -88,10 +92,10 @@ class _MyLoginPageState extends State<MyLoginPage> {
                   ],
                 ),
                 SizedBox(
-                  height: 377,
+                  height: 300,
                 ),
                 Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  //mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
@@ -143,8 +147,33 @@ class _MyLoginPageState extends State<MyLoginPage> {
                               fontWeight: FontWeight.bold),
                         )),
                     SizedBox(
-                      height: 25,
+                     height: 19,
                     ),
+                  
+                    
+                     
+                      Column(
+                        children: [
+                     Text('------ Or Login With ------ ',style: GoogleFonts.blinker(fontWeight: FontWeight.bold),),
+                    SizedBox(
+                      height: 19,
+                    ),
+
+                          GestureDetector(
+                            onTap: ()=> Authmethods().signInWithGoogle(context),
+                            child: Container(
+                              height:50,
+                              width: 50,
+                              margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width/3),
+                               
+                              child:  Image.asset('asset/images/google.png')),
+                          ),
+                        ],
+                      ),
+                         SizedBox(
+                     height: 19,
+                    ),
+                  
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -161,12 +190,11 @@ class _MyLoginPageState extends State<MyLoginPage> {
                             " Register here",
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
+                          
                         ),
                       ],
                     ),
-                    SizedBox(
-                      height: 133,
-                    ),
+                    
                   ],
                 )
               ],

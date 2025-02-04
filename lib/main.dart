@@ -4,6 +4,7 @@ import 'package:mca_project/pages/loginpage.dart';
 import 'package:mca_project/pages/registerpage.dart';
 import 'package:mca_project/themes/darktheme.dart';
 import 'package:mca_project/themes/lightmode.dart';
+import 'pages/detailspage.dart';
 import 'pages/welcomepage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -33,7 +34,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MyWelComePage(),
+      home: 
+      //ProductDetailPage(),
+      MyWelComePage(),
       theme: lightMode,
       darkTheme: darkTheme,
       themeMode: ThemeMode.light,

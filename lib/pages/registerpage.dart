@@ -5,9 +5,13 @@ import 'package:lottie/lottie.dart';
 import 'package:mca_project/provider/userprovider.dart';
 import 'package:provider/provider.dart';
 
+import '../auth/authmethods.dart';
+import '../auth/database.dart';
 import '../components/textfield.dart';
 import '../helper/helperfunction.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import 'homepage.dart';
 
 class MyRegisterPage extends StatefulWidget {
   final VoidCallback onToggle;
@@ -42,58 +46,127 @@ class _MyRegisterPageState extends State<MyRegisterPage> {
     }
   }
 
-  void registerUser(BuildContext context, UserProvider userprovider) async {
-    // Validate input
-    if (usernamecontroller.text.isEmpty ||
-        emailcontroller.text.isEmpty ||
-        passcontroller.text.isEmpty ||
-        confirmpasscontroller.text.isEmpty) {
-      displayMessageToUser("All fields are required", context);
-      return;
-    }
+void registerUser(BuildContext context, UserProvider userprovider) async {
+  // Validate input
+  if (usernamecontroller.text.isEmpty ||
+      emailcontroller.text.isEmpty ||
+      passcontroller.text.isEmpty ||
+      confirmpasscontroller.text.isEmpty) {
+    displayMessageToUser("All fields are required", context);
+    return;
+  }
 
-    // Passwords must match
-    if (passcontroller.text != confirmpasscontroller.text) {
-      displayMessageToUser("Passwords don't match", context);
-      return;
-    }
+  // Passwords must match
+  if (passcontroller.text != confirmpasscontroller.text) {
+    displayMessageToUser("Passwords don't match", context);
+    return;
+  }
 
-    // Show loading
-    showDialog(
-      context: context,
-      builder: (context) => Center(
-          child: Lottie.asset('asset/images/Animation - 1736521859654.json')),
+  // Show loading
+  showDialog(
+    context: context,
+    builder: (context) => Center(
+      child: Lottie.asset('asset/images/Animation - 1736521859654.json'),
+    ),
+  );
+
+  try {
+    // Register user
+    UserCredential userCredential =
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      email: emailcontroller.text.trim(),
+      password: passcontroller.text.trim(),
     );
 
-    try {
-      // Register user
-      UserCredential userCredential =
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: emailcontroller.text.trim(),
-        password: passcontroller.text.trim(),
-      );
+    // Get user name step 1
+    // Save the username to Firebase Auth
+    await userCredential.user!
+        .updateDisplayName(usernamecontroller.text.trim());
 
-      //get user name step 1
-      // Save the username to Firebase Auth
-      await userCredential.user!
-          .updateDisplayName(usernamecontroller.text.trim());
+    // Update the username in the UserProvider
+    userprovider.setUsername(usernamecontroller.text.trim());
 
-      // Update the username in the UserProvider
-      userprovider
-          .setUsername(usernamecontroller.text.trim()); // Fixed usage here
-      Navigator.pop(context);
+    // After registration, save user details in Firestore
+    Map<String, dynamic> userInfoMap = {
+      "Name": userCredential.user!.displayName,
+      "Image": userCredential.user!.photoURL ?? "",  // Handle null photoURL
+      "E-Mail": userCredential.user!.email,
+      "Id": userCredential.user!.uid,
+    };
 
-      // Success message
-      displayMessageToUser("Registration successful!", context);
-      Navigator.pop(context);
-    } on FirebaseAuthException catch (e) {
-      // Dismiss loading dialog
-      Navigator.pop(context);
+    // Add user info to Firestore
+    await DataBaseMethod().addUserDetails(userInfoMap, userCredential.user!.uid);
 
-      // Show error message
-      displayMessageToUser(e.message ?? "An error occurred", context);
-    }
+    // Dismiss loading dialog
+    Navigator.pop(context);
+
+    // Success message
+    displayMessageToUser("Registration successful!", context);
+
+    // Navigate to next page (e.g. home page)
+    Navigator.pop(context);
+
+  } on FirebaseAuthException catch (e) {
+    // Dismiss loading dialog
+    Navigator.pop(context);
+
+    // Show error message
+    displayMessageToUser(e.message ?? "An error occurred", context);
   }
+}
+
+  // void registerUser(BuildContext context, UserProvider userprovider) async {
+  //   // Validate input
+  //   if (usernamecontroller.text.isEmpty ||
+  //       emailcontroller.text.isEmpty ||
+  //       passcontroller.text.isEmpty ||
+  //       confirmpasscontroller.text.isEmpty) {
+  //     displayMessageToUser("All fields are required", context);
+  //     return;
+  //   }
+
+  //   // Passwords must match
+  //   if (passcontroller.text != confirmpasscontroller.text) {
+  //     displayMessageToUser("Passwords don't match", context);
+  //     return;
+  //   }
+
+  //   // Show loading
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) => Center(
+  //         child: Lottie.asset('asset/images/Animation - 1736521859654.json')),
+  //   );
+
+  //   try {
+  //     // Register user
+  //     UserCredential userCredential =
+  //         await FirebaseAuth.instance.createUserWithEmailAndPassword(
+  //       email: emailcontroller.text.trim(),
+  //       password: passcontroller.text.trim(),
+  //     );
+
+  //     //get user name step 1
+  //     // Save the username to Firebase Auth
+  //     await userCredential.user!
+  //         .updateDisplayName(usernamecontroller.text.trim());
+
+  //     // Update the username in the UserProvider
+  //     userprovider
+  //         .setUsername(usernamecontroller.text.trim()); // Fixed usage here
+  //     Navigator.pop(context);
+
+  //     // Success message
+  //     displayMessageToUser("Registration successful!", context);
+  //     Navigator.pop(context);
+  //   } on FirebaseAuthException catch (e) {
+  //     // Dismiss loading dialog
+  //     Navigator.pop(context);
+
+  //     // Show error message
+  //     displayMessageToUser(e.message ?? "An error occurred", context);
+  //   }
+  // }
 
   var primecolor = const Color(0xFF00c7e7);
 
@@ -214,6 +287,26 @@ class _MyRegisterPageState extends State<MyRegisterPage> {
                     SizedBox(
                       height: 25,
                     ),
+                    //  Column(
+                    //     children: [
+                    //  Text('------ Or Login With ------ ',style: GoogleFonts.blinker(fontWeight: FontWeight.bold),),
+                    // SizedBox(
+                    //   height: 19,
+                    // ),
+
+                    //       GestureDetector(
+                    //         onTap: (){
+                    //           Authmethods().signInWithGoogle(context);
+                    //         },
+                    //         child: Container(
+                    //           height:50,
+                    //           width: 50,
+                    //           margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width/3),
+                               
+                    //           child:  Image.asset('asset/images/google.png')),
+                    //       ),
+                    //     ],
+                    //   ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -246,3 +339,80 @@ class _MyRegisterPageState extends State<MyRegisterPage> {
     );
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+//   void registerUser(BuildContext context, UserProvider userprovider) async {
+//   // Validate input
+//   if (usernamecontroller.text.isEmpty ||
+//       emailcontroller.text.isEmpty ||
+//       passcontroller.text.isEmpty ||
+//       confirmpasscontroller.text.isEmpty) {
+//     displayMessageToUser("All fields are required", context);
+//     return;
+//   }
+
+//   // Passwords must match
+//   if (passcontroller.text != confirmpasscontroller.text) {
+//     displayMessageToUser("Passwords don't match", context);
+//     return;
+//   }
+
+//   // Show loading
+//   showDialog(
+//     context: context,
+//     builder: (context) => Center(
+//         child: Lottie.asset('asset/images/Animation - 1736521859654.json')),
+//   );
+
+//   try {
+//     // Register user
+//     UserCredential userCredential =
+//         await FirebaseAuth.instance.createUserWithEmailAndPassword(
+//       email: emailcontroller.text.trim(),
+//       password: passcontroller.text.trim(),
+//     );
+
+//     // Save the username to Firebase Auth
+//     await userCredential.user!.updateDisplayName(usernamecontroller.text.trim());
+
+//     // Update the username in the UserProvider
+//     userprovider.setUsername(usernamecontroller.text.trim());
+
+//     // Store user details in Firestore
+//     Map<String, dynamic> userInfoMap = {
+//       "username": usernamecontroller.text.trim(),
+//       "email": emailcontroller.text.trim(),
+//       "uid": userCredential.user!.uid,
+//     };
+
+//     DataBaseMethod dataBaseMethod = DataBaseMethod();
+//     await dataBaseMethod.addUserDetails(userInfoMap, userCredential.user!.uid);
+
+//     // Dismiss loading dialog
+//     Navigator.pop(context);
+
+//     // Success message
+//     displayMessageToUser("Registration successful!", context);
+
+//     // Navigate to home page
+//     Navigator.pushReplacement(
+//       context,
+//       MaterialPageRoute(builder: (context) => MyHomePage()),
+//     );
+//   } on FirebaseAuthException catch (e) {
+//     // Dismiss loading dialog
+//     Navigator.pop(context);
+
+//     // Show error message
+//     displayMessageToUser(e.message ?? "An error occurred", context);
+//   }
+// }
