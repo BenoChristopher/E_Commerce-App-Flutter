@@ -37,17 +37,17 @@ class _MyRegisterPageState extends State<MyRegisterPage> {
 
   final TextEditingController confirmpasscontroller = TextEditingController();
 
-  void testFirebaseConnection() async {
-    try {
-      await FirebaseAuth.instance.signInAnonymously();
-      print('Firebase connection successful!');
-    } catch (e) {
-      print('Firebase connection failed: $e');
-    }
-  }
+  // void testFirebaseConnection() async {
+  //   try {
+  //     await FirebaseAuth.instance.signInAnonymously();
+  //     print('Firebase connection successful!');
+  //   } catch (e) {
+  //     print('Firebase connection failed: $e');
+  //   }
+  // }
 
 void registerUser(BuildContext context, UserProvider userprovider) async {
-  // Validate input
+  
   if (usernamecontroller.text.isEmpty ||
       emailcontroller.text.isEmpty ||
       passcontroller.text.isEmpty ||
@@ -56,13 +56,13 @@ void registerUser(BuildContext context, UserProvider userprovider) async {
     return;
   }
 
-  // Passwords must match
+  
   if (passcontroller.text != confirmpasscontroller.text) {
     displayMessageToUser("Passwords don't match", context);
     return;
   }
 
-  // Show loading
+ 
   showDialog(
     context: context,
     builder: (context) => Center(
@@ -71,22 +71,21 @@ void registerUser(BuildContext context, UserProvider userprovider) async {
   );
 
   try {
-    // Register user
+    
     UserCredential userCredential =
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
       email: emailcontroller.text.trim(),
       password: passcontroller.text.trim(),
     );
 
-    // Get user name step 1
-    // Save the username to Firebase Auth
+    
     await userCredential.user!
         .updateDisplayName(usernamecontroller.text.trim());
 
-    // Update the username in the UserProvider
+    
     userprovider.setUsername(usernamecontroller.text.trim());
 
-    // After registration, save user details in Firestore
+    
     Map<String, dynamic> userInfoMap = {
       "Name": userCredential.user!.displayName,
       "Image": userCredential.user!.photoURL ?? "",  // Handle null photoURL
@@ -94,79 +93,27 @@ void registerUser(BuildContext context, UserProvider userprovider) async {
       "Id": userCredential.user!.uid,
     };
 
-    // Add user info to Firestore
     await DataBaseMethod().addUserDetails(userInfoMap, userCredential.user!.uid);
 
-    // Dismiss loading dialog
+    
     Navigator.pop(context);
 
-    // Success message
+    
     displayMessageToUser("Registration successful!", context);
 
-    // Navigate to next page (e.g. home page)
+    
     Navigator.pop(context);
 
   } on FirebaseAuthException catch (e) {
-    // Dismiss loading dialog
+    
     Navigator.pop(context);
 
-    // Show error message
+    
     displayMessageToUser(e.message ?? "An error occurred", context);
   }
 }
 
-  // void registerUser(BuildContext context, UserProvider userprovider) async {
-  //   // Validate input
-  //   if (usernamecontroller.text.isEmpty ||
-  //       emailcontroller.text.isEmpty ||
-  //       passcontroller.text.isEmpty ||
-  //       confirmpasscontroller.text.isEmpty) {
-  //     displayMessageToUser("All fields are required", context);
-  //     return;
-  //   }
-
-  //   // Passwords must match
-  //   if (passcontroller.text != confirmpasscontroller.text) {
-  //     displayMessageToUser("Passwords don't match", context);
-  //     return;
-  //   }
-
-  //   // Show loading
-  //   showDialog(
-  //     context: context,
-  //     builder: (context) => Center(
-  //         child: Lottie.asset('asset/images/Animation - 1736521859654.json')),
-  //   );
-
-  //   try {
-  //     // Register user
-  //     UserCredential userCredential =
-  //         await FirebaseAuth.instance.createUserWithEmailAndPassword(
-  //       email: emailcontroller.text.trim(),
-  //       password: passcontroller.text.trim(),
-  //     );
-
-  //     //get user name step 1
-  //     // Save the username to Firebase Auth
-  //     await userCredential.user!
-  //         .updateDisplayName(usernamecontroller.text.trim());
-
-  //     // Update the username in the UserProvider
-  //     userprovider
-  //         .setUsername(usernamecontroller.text.trim()); // Fixed usage here
-  //     Navigator.pop(context);
-
-  //     // Success message
-  //     displayMessageToUser("Registration successful!", context);
-  //     Navigator.pop(context);
-  //   } on FirebaseAuthException catch (e) {
-  //     // Dismiss loading dialog
-  //     Navigator.pop(context);
-
-  //     // Show error message
-  //     displayMessageToUser(e.message ?? "An error occurred", context);
-  //   }
-  // }
+  
 
   var primecolor = const Color(0xFF00c7e7);
 

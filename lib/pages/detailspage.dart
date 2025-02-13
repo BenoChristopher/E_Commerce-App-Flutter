@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mca_project/pages/homepage.dart';
-
-import '../components/bigbutton.dart';
 import '../components/mybutton.dart';
 
 class ProductDetailPage extends StatefulWidget {

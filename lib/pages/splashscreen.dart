@@ -5,16 +5,16 @@ import 'package:google_fonts/google_fonts.dart';
 import '../auth/auth.dart';
 import '../components/mybutton.dart';
 
-class MyWelComePage extends StatefulWidget {
-  MyWelComePage({super.key});
+class MySplashScreen extends StatefulWidget {
+  MySplashScreen({super.key});
 
   @override
-  State<MyWelComePage> createState() => _MyWelComePageState();
+  State<MySplashScreen> createState() => _MyWelComePageState();
 }
 
 
 
-class _MyWelComePageState extends State<MyWelComePage>
+class _MyWelComePageState extends State<MySplashScreen>
     with SingleTickerProviderStateMixin {
   @override
   void initState() {

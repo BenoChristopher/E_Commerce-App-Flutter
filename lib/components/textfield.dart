@@ -6,7 +6,8 @@ class MyTextField extends StatelessWidget {
     required this.hintText,
     required this.obsecurText,
     required this.controller,
-    required this.icon,
+    required this.icon, 
+    
   });
 
   final String hintText;
@@ -21,7 +22,10 @@ class MyTextField extends StatelessWidget {
         obscureText: obsecurText,
         decoration: InputDecoration(
           hintText: hintText,
+          hintStyle: TextStyle(color: Colors.grey.shade600),
           prefixIcon: icon,
+          prefixIconColor: Colors.grey.shade600,
+          //iconColor:Colors.grey ,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
         ));
   }

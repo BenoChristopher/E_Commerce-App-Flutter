@@ -4,13 +4,17 @@ import 'package:mca_project/pages/loginpage.dart';
 import 'package:mca_project/pages/registerpage.dart';
 import 'package:mca_project/themes/darktheme.dart';
 import 'package:mca_project/themes/lightmode.dart';
+import 'admin/uploadproduct.dart';
 import 'pages/detailspage.dart';
-import 'pages/welcomepage.dart';
+import 'pages/splashscreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:provider/provider.dart';
 
 import 'provider/userprovider.dart';
+
+final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,10 +37,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+       
       debugShowCheckedModeBanner: false,
       home: 
       //ProductDetailPage(),
-      MyWelComePage(),
+      Uploadproduct(),
+      //MySplashScreen(),
       theme: lightMode,
       darkTheme: darkTheme,
       themeMode: ThemeMode.light,
