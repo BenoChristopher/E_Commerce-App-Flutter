@@ -46,7 +46,8 @@ String ?value;
   Widget build(BuildContext context) {
     return Scaffold(
 
-      body: SingleChildScrollView(
+      body: SingleChildScrollView
+      (
         child: Container(
           padding: EdgeInsets.only(top: 60,left: 23,right: 23),
           child: Column(
