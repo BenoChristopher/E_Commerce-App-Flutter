@@ -6,7 +6,7 @@ class UserProvider extends ChangeNotifier {
   String get userName => _userName;
 
   void setUsername(String username) {
-    _userName = username; // Correctly update the private field
-    notifyListeners(); // Notify listeners about the change
+    _userName = username; 
+    notifyListeners(); 
   }
 }

@@ -41,8 +41,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: 
       //ProductDetailPage(),
-      Uploadproduct(),
-      //MySplashScreen(),
+      //Uploadproduct(),
+      MySplashScreen(),
       theme: lightMode,
       darkTheme: darkTheme,
       themeMode: ThemeMode.light,

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import '../admin/uploadproduct.dart';
+
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});
 
@@ -57,6 +59,18 @@ class MyDrawer extends StatelessWidget {
               ],
             )
           ]),
+        ),
+        ListTile(
+          onTap: (){
+            Navigator.of(context).push(
+    MaterialPageRoute(builder: (context) => Uploadproduct ()),
+  );
+          },
+          title: Text('Admin'),
+          leading: IconButton(
+            icon: Icon(Icons.admin_panel_settings),
+            onPressed: signOutUser,
+          ),
         ),
         ListTile(
           onTap: signOutUser,

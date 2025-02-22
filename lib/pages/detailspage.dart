@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mca_project/pages/homepage.dart';
+import 'package:mca_project/pages/productpage.dart';
 import '../components/mybutton.dart';
 
 class ProductDetailPage extends StatefulWidget {
@@ -24,20 +25,23 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           
           children:[ 
            Container(
-          padding: EdgeInsets.only(left: 30,right: 30,top: 40,bottom: 20),
-          width:MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(color: primecolor,borderRadius: BorderRadius.only(bottomRight: Radius.circular(140))),
-          child: SizedBox(
+                     padding: EdgeInsets.only(left: 30,right: 30,top: 40,bottom: 20),
+                     width:MediaQuery.of(context).size.width,
+                     decoration: BoxDecoration(color: primecolor,borderRadius: BorderRadius.only(bottomRight: Radius.circular(140))),
+                     child: SizedBox(
             height: 300,
             width: 300,
             child: Image.asset('asset/images/shoe1.png'),
-          
-          ), ),
+                     
+                     ), ),
           Positioned(
               top: 60,
               left: 23,
             child: GestureDetector(
-              onTap:(){} ,
+              onTap:(){
+            // Navigator.push(context, MaterialPageRoute(builder: (context)=>ProductPage()));
+            //Navigator.pop(context);
+           },
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(90),
                  

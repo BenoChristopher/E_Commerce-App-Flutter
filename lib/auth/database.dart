@@ -20,6 +20,14 @@ class DataBaseMethod{
       print("Error saving user details: $e");
     }
   }
+
+  
+  Future addEvents (Map<String,dynamic> userInfoMap, String id) async{
+
+    return await FirebaseFirestore.instance.
+    collection("Event").
+    doc(id).set(userInfoMap);
+  }
   
   
 }
