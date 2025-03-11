@@ -52,7 +52,7 @@ String ?value;
           padding: EdgeInsets.only(top: 60,left: 23,right: 23),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+            children: [ 
                Row(
                  children: [
                   GestureDetector(
@@ -71,16 +71,21 @@ String ?value;
                  ],
                ),
                 SizedBox(height: 40),
-                selectedImage != null ? Image.file(selectedImage!,  height: 100,
-                  width: 100,):
-               GestureDetector(
-                onTap:(){
-                   getImage();
-                },
-                 child: Center(
+                selectedImage != null ? Center(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.file(selectedImage!,  height: 150,
+                      width: 150,),
+                  ),
+                ):
+               Center(
+                 child: GestureDetector(
+                  onTap:(){
+                     getImage();
+                  },
                    child: Container(
-                    height: 100,
-                    width: 100,
+                    height: 150,
+                    width: 150,
                     decoration: BoxDecoration(border: Border.all(color: Colors.black,width: 2.0),
                     borderRadius: BorderRadius.circular(8)),
                     child: Icon(Icons.add_a_photo_outlined),

@@ -28,7 +28,14 @@ class DataBaseMethod{
     collection("Event").
     doc(id).set(userInfoMap);
   }
+
+  Future<Stream<QuerySnapshot>> getAllProduct()async{
+    return await FirebaseFirestore.instance.collection("Event").snapshots();
+  }
+
+
   
   
-}
+  
+} 
 

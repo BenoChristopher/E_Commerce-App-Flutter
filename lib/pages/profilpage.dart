@@ -1,12 +1,55 @@
 import 'package:flutter/material.dart';
 
 class MyProfile extends StatelessWidget {
-  const MyProfile({super.key});
+
+  final String text;
+   MyProfile({super.key,required this.text});
+  
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:Text('Profile Page'),
+      appBar: AppBar(title: Text(text)),
+    
     );
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

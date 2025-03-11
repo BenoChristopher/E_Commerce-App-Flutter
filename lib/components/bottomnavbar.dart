@@ -1,8 +1,8 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:mca_project/pages/cartpage.dart';
+import 'package:mca_project/pages/profilpage.dart';
 import 'package:mca_project/pages/homepage.dart';
-import 'package:mca_project/pages/profilepage.dart';
+import 'package:mca_project/pages/cartpage.dart';
 
 // class MyBottomNavBar extends StatefulWidget {
 //   const MyBottomNavBar({super.key});
