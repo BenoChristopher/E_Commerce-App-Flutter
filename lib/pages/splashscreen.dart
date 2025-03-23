@@ -60,6 +60,7 @@ class _MyWelComePageState extends State<MySplashScreen>
                   textStyle: TextStyle(fontSize: 26, color: Colors.grey[700])),
             ),
             Row(
+              
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [

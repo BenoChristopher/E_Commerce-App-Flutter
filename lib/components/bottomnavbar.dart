@@ -45,7 +45,7 @@ class MyBottomNavBar extends StatefulWidget {
       {super.key, required this.onPageSelected, required this.currentPage});
 
   final Function(int) onPageSelected;
-  final int currentPage; // Pass the currentPage to synchronize
+  final int currentPage;
 
   @override
   State<MyBottomNavBar> createState() => _MyBottomNavBarState();
@@ -55,14 +55,14 @@ class _MyBottomNavBarState extends State<MyBottomNavBar> {
   @override
   Widget build(BuildContext context) {
     return CurvedNavigationBar(
-      index: widget.currentPage, // Use the currentPage passed from MyHomePage
+      index: widget.currentPage, 
       height: 65,
       backgroundColor: Colors.white,
       color: primecolor,
       animationDuration: Duration(milliseconds: 500),
       onTap: (int index) {
         widget.onPageSelected(
-            index); // Notify MyHomePage about the page selection
+            index); 
       },
       items: [
         Icon(Icons.home),

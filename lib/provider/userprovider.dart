@@ -43,7 +43,7 @@ class UserProvider extends ChangeNotifier {
       "name": product["name"],
       "price": product["price"],
       "image": product["image"],
-      "size": product["size"], // ✅ Save size in Firestore
+      "size": product["size"], 
       "quantity": product["quantity"],
       "totalPrice": product["totalPrice"]
     };
@@ -99,27 +99,5 @@ class UserProvider extends ChangeNotifier {
 }
 
 
-  // Future<void> loadCart() async {
-  //   if (userId.isEmpty) return;
-
-  //   try {
-  //     final snapshot = await _firestore.collection("users").doc(userId).collection("cart").get();
-
-  //     _cart = snapshot.docs.map((doc) {
-  //       final data = doc.data();
-  //       return {
-  //         "id": doc.id,
-  //         "name": data["name"] ?? "Unknown Product",
-  //         "price": data["price"] ?? "0.0",
-  //         "image": data["image"] ?? "",
-  //         "quantity": data["quantity"] ?? 1, 
-  //         "totalPrice": data["totalPrice"] ?? "0.0"
-  //       };
-  //     }).toList();
-
-  //     notifyListeners();
-  //   } catch (e) {
-  //     print("Error loading cart: $e");
-  //   }
-  // }
+  
 }

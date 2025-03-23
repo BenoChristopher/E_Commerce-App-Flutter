@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mca_project/auth/auth.dart';
 import 'package:mca_project/pages/loginpage.dart';
 import 'package:mca_project/pages/registerpage.dart';
+import 'package:mca_project/pages/uicard.dart';
 import 'package:mca_project/themes/darktheme.dart';
 import 'package:mca_project/themes/lightmode.dart';
 import 'admin/uploadproduct.dart';
@@ -40,24 +41,15 @@ class MyApp extends StatelessWidget {
        
       debugShowCheckedModeBanner: false,
       home: 
-      //ProductDetailPage(),
+      //ProductDetailPage(), 
       //Uploadproduct(),
       MySplashScreen(),
+
+      //UiCard(),
       theme: lightMode,
       darkTheme: darkTheme,
       themeMode: ThemeMode.light,
-      // routes: {
-      //   "/loginpage": (context) => MyLoginPage(
-      //         onToggle: () {
-      //           Navigator.pushNamed(context, '/registerpage');
-      //         },
-      //       ),
-      //   "/registerpage": (context) => MyRegisterPage(
-      //         onToggle: () {
-      //           Navigator.pushNamed(context, '/loginpage');
-      //         },
-      //       ),
-      // },
+     
     );
   }
 }

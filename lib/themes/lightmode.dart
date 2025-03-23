@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 ThemeData lightMode = ThemeData(
     brightness: Brightness.light,
@@ -9,6 +10,6 @@ ThemeData lightMode = ThemeData(
       surface: Colors.white,
       inversePrimary: Colors.blue.shade800,
     ),
-    textTheme: ThemeData.light()
-        .textTheme
+    textTheme:GoogleFonts.blinkerTextTheme( ThemeData.light()
+        .textTheme)
         .apply(bodyColor: Colors.grey[800], displayColor: Colors.black));

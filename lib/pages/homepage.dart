@@ -65,19 +65,11 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
        
         actions: [
-        IconButton(onPressed: () {}, icon: Icon(Icons.shopping_bag_sharp)),
+        IconButton(onPressed: () {}, icon: Icon(Icons.favorite_rounded)),
         ],
       ),
     
-      // appBar: AppBar(
-      //   title: Text(
-      //     'Home',
-      //     style: TextStyle(fontWeight: FontWeight.bold),
-      //   ),
-      //   actions: [
-      //     IconButton(onPressed: () {}, icon: Icon(Icons.shopping_bag_sharp)),
-      //   ],
-      // ),
+      
       bottomNavigationBar: MyBottomNavBar(
         onPageSelected: onPageSelected,
         currentPage: currentPage, 
@@ -88,7 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ProductPage(),
          
           MyCart(),
-           MyProfile(text: "Profile Page",),
+           MyProfile(text: "Profile Page 👾",),
         ],
       ),
     );

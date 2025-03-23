@@ -66,7 +66,9 @@ void registerUser(BuildContext context, UserProvider userprovider) async {
   showDialog(
     context: context,
     builder: (context) => Center(
-      child: Lottie.asset('asset/images/Animation - 1736521859654.json'),
+      child: CircularProgressIndicator(
+        color: primecolor 
+      ),
     ),
   );
 
@@ -297,69 +299,3 @@ void registerUser(BuildContext context, UserProvider userprovider) async {
 
 
 
-//   void registerUser(BuildContext context, UserProvider userprovider) async {
-//   // Validate input
-//   if (usernamecontroller.text.isEmpty ||
-//       emailcontroller.text.isEmpty ||
-//       passcontroller.text.isEmpty ||
-//       confirmpasscontroller.text.isEmpty) {
-//     displayMessageToUser("All fields are required", context);
-//     return;
-//   }
-
-//   // Passwords must match
-//   if (passcontroller.text != confirmpasscontroller.text) {
-//     displayMessageToUser("Passwords don't match", context);
-//     return;
-//   }
-
-//   // Show loading
-//   showDialog(
-//     context: context,
-//     builder: (context) => Center(
-//         child: Lottie.asset('asset/images/Animation - 1736521859654.json')),
-//   );
-
-//   try {
-//     // Register user
-//     UserCredential userCredential =
-//         await FirebaseAuth.instance.createUserWithEmailAndPassword(
-//       email: emailcontroller.text.trim(),
-//       password: passcontroller.text.trim(),
-//     );
-
-//     // Save the username to Firebase Auth
-//     await userCredential.user!.updateDisplayName(usernamecontroller.text.trim());
-
-//     // Update the username in the UserProvider
-//     userprovider.setUsername(usernamecontroller.text.trim());
-
-//     // Store user details in Firestore
-//     Map<String, dynamic> userInfoMap = {
-//       "username": usernamecontroller.text.trim(),
-//       "email": emailcontroller.text.trim(),
-//       "uid": userCredential.user!.uid,
-//     };
-
-//     DataBaseMethod dataBaseMethod = DataBaseMethod();
-//     await dataBaseMethod.addUserDetails(userInfoMap, userCredential.user!.uid);
-
-//     // Dismiss loading dialog
-//     Navigator.pop(context);
-
-//     // Success message
-//     displayMessageToUser("Registration successful!", context);
-
-//     // Navigate to home page
-//     Navigator.pushReplacement(
-//       context,
-//       MaterialPageRoute(builder: (context) => MyHomePage()),
-//     );
-//   } on FirebaseAuthException catch (e) {
-//     // Dismiss loading dialog
-//     Navigator.pop(context);
-
-//     // Show error message
-//     displayMessageToUser(e.message ?? "An error occurred", context);
-//   }
-// }

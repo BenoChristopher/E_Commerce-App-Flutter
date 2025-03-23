@@ -33,9 +33,11 @@ class _MyLoginPageState extends State<MyLoginPage> {
       context: context,
       barrierDismissible:
           false, // Prevent closing the dialog by tapping outside
-      builder: (context) => Center(
-        child: Lottie.asset('asset/images/Animation - 1736521859654.json'),
+      builder: (context) =>Center(
+      child: CircularProgressIndicator(
+        color: primecolor 
       ),
+    ),
     );
 
     // Automatically close the dialog after 3 seconds

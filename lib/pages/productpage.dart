@@ -5,10 +5,14 @@ import 'package:mca_project/auth/database.dart';
 import 'package:mca_project/pages/homepage.dart';
 import 'package:mca_project/provider/userprovider.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 
+import '../components/category.dart';
 import 'detailspage.dart';
 
 class ProductPage extends StatefulWidget {
+ 
+
 
   
   const ProductPage({
@@ -18,11 +22,11 @@ class ProductPage extends StatefulWidget {
   @override
   State<ProductPage> createState() => _ProductPageState();
 }
- Stream? productStream;
-
+ 
  
 
 class _ProductPageState extends State<ProductPage> {
+   Stream? productStream;
 
   onLoadData() async{
   productStream = await DataBaseMethod().getAllProduct();
@@ -47,183 +51,163 @@ class _ProductPageState extends State<ProductPage> {
   });
   }
 
-  Widget allproduct(){
+  
 
-    if (productStream == null) {
+  Widget allproduct() {
+  if (productStream == null) {
     return Center(child: CircularProgressIndicator());
   }
-    
 
-    return StreamBuilder( 
+  return 
+  
+  StreamBuilder(
       stream: productStream,
-      builder:(context,AsyncSnapshot snapshot){
-      return snapshot.hasData ? SizedBox(
+      builder: (context, AsyncSnapshot snapshot) {
+        if (!snapshot.hasData || snapshot.data.docs.isEmpty) {
+          return Center(child: Text("No Products Available"));
+        }
+
+        return SizedBox(
           height: 500,
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: snapshot.data.docs.length,
-          itemBuilder : (context ,index){
-          DocumentSnapshot ds = snapshot.data.docs[index];
-          return GestureDetector(
-            onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>ProductDetailPage(
-                image: "asset/images/shoe2.png",
-                description: ds["Description"],
-                name: ds["Name"],
-                price: ds["Price"],
-                
-                  
-              )));
-            },
-            child: Column(
-              children: [
-                Container(
-                 
-                        padding: const EdgeInsets.all(0),
-                        margin: const EdgeInsets.only(right: 20),
-                        height: 350,
-                        // width: MediaQuery.of(context).size.width,
-                        width: 250,
-                        decoration: BoxDecoration(
-                            color: Colors.grey.shade300,
-                            borderRadius: BorderRadius.circular(16)),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(child: Image.asset('asset/images/shoe2.png')),
-                            SizedBox(height: 5),
-                            Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                              child: Text(
-                                
-                                  ds["Description"]),
-                            ),
-                            Container(
-                               padding: const EdgeInsets.only(left: 20.0),
+          child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: snapshot.data.docs.length,
+              itemBuilder: (context, index) {
+                DocumentSnapshot ds = snapshot.data.docs[index];
+
+                return Column(
+                  children: [
+                    Container(
+                      //padding: const EdgeInsets.all(0),
+                      margin: const EdgeInsets.only(right: 20),
+                      height: 350,
+                      width: 250,
+                      decoration: BoxDecoration(
+                          color: Colors.grey.shade300,
+                          borderRadius: BorderRadius.circular(16)),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
                        
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Column(
-                                    // mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                    ds["Name"],
-                                        style: GoogleFonts.inter(
-                                          fontSize: 14,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                      Text("\$"+ds["Price"],
-                                        style: GoogleFonts.inter(
-                                          fontSize: 14,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                      SizedBox(height: 5),
-                                    ],
+                          ds["Image"] != null && ds["Image"].isNotEmpty
+                              ? Padding(
+                                padding: const EdgeInsets.only(top: 20,left: 0,right: 0,bottom: 0),
+                                child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(8),
+                                    child: Image.network(
+                                      ds["Image"],
+                                      height: 200,
+                                      width: 200,
+                                      fit: BoxFit.fitWidth,
+                                      loadingBuilder: (context, child, progress) {
+                                        if (progress == null) return child;
+                                        return Shimmer.fromColors(
+                                          baseColor: Colors.grey[300]!,
+                                          highlightColor: Colors.grey[100]!,
+                                          child: Container(
+                                            height: 200,
+                                            width: 200,
+                                            decoration: BoxDecoration(
+            color: Colors.grey[300],
+            borderRadius: BorderRadius.circular(8),
+          ),
+
+                                          ),
+                                          
+                                        );
+                                      },
+                                      errorBuilder: (context, error, stackTrace) =>
+                                          Icon(Icons.image_not_supported,
+                                              size: 50, color: Colors.grey),
+                                    ),
                                   ),
-//                                   Consumer<UserProvider>(
-//                             builder: (context, userProvider, child) {
-//                                     return GestureDetector(
-//                                         onTap: () {
-//                                          userProvider.addCart({
-//                                        "name": ds["Name"],
-//                                        "price": ds["Price"],
-//                                        "image": "asset/images/shoe2.png"
-//                                                       });
-//         ScaffoldMessenger.of(context).showSnackBar(
-//           SnackBar(content: Text("Added to cart"), duration: Duration(seconds: 2)),
-//         );
-//       },
-//       child: Container(
-//         height: 50,
-//         width: 50,
-//         decoration: BoxDecoration(
-//             color: primecolor,
-//             borderRadius: BorderRadius.circular(8)),
-//         child: Icon(Icons.add),
-//       ),
-//     );
-//   },
-// ),
-
-                                  
-                                  //  Consumer<UserProvider>(
-                                  //       builder: (context, userProvider, child) {
-                                  //         return GestureDetector(
-                                  //           onTap: () {
-                                  //             userProvider.addCart({
-                                  //               "name": ds["Name"],
-                                  //               "price": ds["Price"],
-                                  //               "image": "asset/images/shoe2.png"
-                                  //             });
-                                  //             ScaffoldMessenger.of(context).showSnackBar(
-                                  //               SnackBar(
-                                  //                 content: Text("Added to cart"),
-                                  //                 duration: Duration(seconds: 2),
-                                  //               ),
-                                  //             );
-                                  //           },
-                                  //           child: Container(
-                                  //             height: 50,
-                                  //             width: 50,
-                                  //             decoration: BoxDecoration(
-                                  //                 color: primecolor,
-                                  //                 borderRadius: BorderRadius.circular(8)),
-                                  //             child: Icon(Icons.add),
-                                  //           ),
-                                  //         );
-                                  //       },
-                                  //     ),
-                              
-                                  // Consumer<UserProvider>(
-                                  //   builder: (context, userProvider,child){
-
-                                    
-                                  //   return GestureDetector(
-                                  //     onTap: (){
-                                  //       UserProvider.addCart({
-                                  //         "Name": ds["Name"],
-                                  //         "Price": ds["Price"],
+                              )
+                              : Icon(Icons.image_not_supported,
+                                  size: 50, color: Colors.grey),
+                
+                          SizedBox(height: 1),
+                
+                         
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                            child: Text(ds["Description"],maxLines: 3,),
+                          ),
+                
+                          Container(
+                            padding: const EdgeInsets.only(left: 20.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      width: 150,
+                                      child: Text(
+                                        ds["Name"],
+                                        maxLines: 1,
+                                        style: GoogleFonts.inter(
                                           
-                                  //         "Image": "asset/images/shoe2.png",
-                                          
-                                  //       });
-                                  //     },
-                                  //     child: Container(
-                                  //       height: 50,
-                                  //       width: 50,
-                                        
-                                  //       decoration: BoxDecoration(
-                                                                    
-                                  //         color: primecolor,
-                                  //         borderRadius: BorderRadius.circular(8)
-                                  //       ),
-                                  //       child: Icon(Icons.add)
-                                  //     ),
-                                  //   );}
-                                  // )
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
+                                          fontSize: 15,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ),
+                                    Text(
+                                      "\$" + ds["Price"],
+                                      style: GoogleFonts.inter(
+                                        fontSize: 14,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    SizedBox(height: 8),
+                                  ],
+                                ),
+                                GestureDetector(
+                                   onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ProductDetailPage(
+                                  image: ds["Image"], // Firebase Image URL
+                                  description: ds["Description"],
+                                  name: ds["Name"],
+                                  price: ds["Price"],
+                                )));
+                  },
+                                  child: Container(
+                                    height: 50,
+                                    width: 50,
+                                     decoration: BoxDecoration(
+                                            
+                                          color: primecolor,
+                                            borderRadius: BorderRadius.circular(8),
+                                                        
+                                          ),
+                                    child: Icon(
+                                      Icons.add,color: Colors.white,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
-              ],
-            ),
-          );
-        }),
-      )
-                              :Container();
+                    ),
+                  ],
+                );
+              }),
+        );
+      });
 
-    });
-  }
+
+}
+
 
 
 
@@ -239,15 +223,17 @@ class _ProductPageState extends State<ProductPage> {
               children: [
                 Consumer<UserProvider>(
                   builder: (context, userProvider, child) {
-                    return Container(
-                     // alignment: Alignment.topRight,
-                       width: MediaQuery.of(context).size.width * 0.8,
-                      child: Text(
-                        'Hello, ${userProvider.userName}',
-                        style: GoogleFonts.inter(
-                          fontSize: 20,
-                          color: Colors.black,
-                          fontWeight: FontWeight.w600,
+                    return Flexible(
+                      child: Container(
+                       // alignment: Alignment.topRight,
+                        // width: MediaQuery.of(context).size.width * 0.8,
+                        child: Text(
+                          'Hello, ${userProvider.userName}',
+                          style: GoogleFonts.inter(
+                            fontSize: 20,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
                     );
@@ -258,8 +244,8 @@ class _ProductPageState extends State<ProductPage> {
                   width: 7,
                 ),
                 SizedBox(
-                    height: 20,
-                    width: 20,
+                    height: 25,
+                    width: 25,
                     child: Image.asset('asset/images/Vector.png')),
               ],
             ),
@@ -321,153 +307,8 @@ class _ProductPageState extends State<ProductPage> {
             ),
             Container(
               height: 80,
-              child: ListView(scrollDirection: Axis.horizontal, children: [
-                Container(
-                  margin: EdgeInsets.only(bottom: 3),
-                  child: Material(
-                    elevation: 3.0,
-                    borderRadius: BorderRadius.circular(12),
-                    child: Container(
-                      width: 80,
-                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                      decoration: BoxDecoration(
-                          color: primecolor,
-                          borderRadius: BorderRadius.circular(12)),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                              height: 25,
-                              width: 25,
-                              child: Image.asset('asset/images/bags.png')),
-                          SizedBox(
-                            height: 2,
-                          ),
-                          Text(
-                            'Bags',
-                            style: GoogleFonts.inter(
-                              fontSize: 12,
-                              color: Colors.black54,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: 30,
-                ),
-                Container(
-                  margin: EdgeInsets.only(bottom: 3),
-                  child: Material(
-                    elevation: 3.0,
-                    borderRadius: BorderRadius.circular(12),
-                    child: Container(
-                      width: 80,
-                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                      decoration: BoxDecoration(
-                          color: primecolor,
-                          borderRadius: BorderRadius.circular(12)),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                              height: 25,
-                              width: 25,
-                              child: Image.asset('asset/images/dress.png')),
-                          SizedBox(
-                            height: 2,
-                          ),
-                          Text(
-                            'Cloths',
-                            style: GoogleFonts.inter(
-                              fontSize: 12,
-                              color: Colors.black54,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: 30,
-                ),
-                Container(
-                  margin: EdgeInsets.only(bottom: 3),
-                  child: Material(
-                    elevation: 3.0,
-                    borderRadius: BorderRadius.circular(12),
-                    child: Container(
-                      width: 80,
-                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                      decoration: BoxDecoration(
-                          color: primecolor,
-                          borderRadius: BorderRadius.circular(12)),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                              height: 25,
-                              width: 25,
-                              child: Image.asset('asset/images/shoes.png')),
-                          SizedBox(
-                            height: 2,
-                          ),
-                          Text(
-                            'Shoes',
-                            style: GoogleFonts.inter(
-                              fontSize: 12,
-                              color: Colors.black54,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: 30,
-                ),
-                Container(
-                  margin: EdgeInsets.only(bottom: 3),
-                  child: Material(
-                    elevation: 3.0,
-                    borderRadius: BorderRadius.circular(12),
-                    child: Container(
-                      width: 80,
-                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                      decoration: BoxDecoration(
-                          color: primecolor,
-                          borderRadius: BorderRadius.circular(12)),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                              height: 25,
-                              width: 25,
-                              child: Image.asset('asset/images/watches.png')),
-                          SizedBox(
-                            height: 2,
-                          ),
-                          Text(
-                            'Watches',
-                            style: GoogleFonts.inter(
-                              fontSize: 12,
-                              color: Colors.black54,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ]),
+              child:CategoriesList(),
+              
             ),
             SizedBox(
               height: 20,
