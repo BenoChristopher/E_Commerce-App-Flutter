@@ -1,4 +1,5 @@
 
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -22,82 +23,94 @@ class UserProvider extends ChangeNotifier {
     return _auth.currentUser?.uid ?? "";
   }
 
- 
   UserProvider() {
     if (userId.isNotEmpty) {
-      loadCart(); 
+      loadCart(); // Load cart items on startup
     }
   }
 
-  
-
-
-  Future<void> addCart(Map<String, dynamic> product) async {
-  if (userId.isEmpty) return;
-
-  try {
-    String docId = _firestore.collection("users").doc(userId).collection("cart").doc().id;
-
-    Map<String, dynamic> cartItem = {
-      "id": docId,
-      "name": product["name"],
-      "price": product["price"],
-      "image": product["image"],
-      "size": product["size"], 
-      "quantity": product["quantity"],
-      "totalPrice": product["totalPrice"]
-    };
-
-    await _firestore.collection("users").doc(userId).collection("cart").doc(docId).set(cartItem);
-
-    _cart.add(cartItem);
-    notifyListeners();
-  } catch (e) {
-    print("Error adding to cart: $e");
-  }
-}
-
-
- 
-  Future<void> removeFromCart(String docId, int index) async {
-    if (userId.isEmpty || docId.isEmpty) return;
+  /// 🔥 **Load Cart from Firestore**
+  Future<void> loadCart() async {
+    if (userId.isEmpty) return;
 
     try {
-      await _firestore.collection("users").doc(userId).collection("cart").doc(docId).delete();
+      QuerySnapshot snapshot = await _firestore
+          .collection("users")
+          .doc(userId)
+          .collection("cart")
+          .get();
 
-     
+      _cart = snapshot.docs.map((doc) {
+        return {
+          "id": doc.id,
+          "name": doc["name"],
+          "price": doc["price"],
+          "image": doc["image"],
+          "size": doc["size"],
+          "quantity": doc["quantity"],
+          "totalPrice": doc["totalPrice"],
+        };
+      }).toList();
+
+      notifyListeners();
+    } catch (e) {
+      print("Error loading cart: $e");
+    }
+  }
+
+  /// 🔥 **Add Item to Cart**
+  Future<void> addCart(Map<String, dynamic> product) async {
+    if (userId.isEmpty) return;
+
+    try {
+      String docId = _firestore
+          .collection("users")
+          .doc(userId)
+          .collection("cart")
+          .doc()
+          .id;
+
+      Map<String, dynamic> cartItem = {
+        "id": docId,
+        "name": product["name"],
+        "price": product["price"],
+        "image": product["image"],
+        "size": product["size"],
+        "quantity": product["quantity"],
+        "totalPrice": product["totalPrice"]
+      };
+
+      await _firestore
+          .collection("users")
+          .doc(userId)
+          .collection("cart")
+          .doc(docId)
+          .set(cartItem);
+
+      _cart.add(cartItem);
+      notifyListeners();
+    } catch (e) {
+      print("Error adding to cart: $e");
+    }
+  }
+
+  /// 🔥 **Remove Item from Cart**
+  Future<void> removeFromCart(String itemId, int index) async {
+    if (userId.isEmpty) return;
+
+    try {
+      await _firestore
+          .collection("users")
+          .doc(userId)
+          .collection("cart")
+          .doc(itemId)
+          .delete();
+
       _cart.removeAt(index);
       notifyListeners();
     } catch (e) {
-      print("Error deleting cart item: $e");
+      print("Error removing item from cart: $e");
     }
   }
-
-  Future<void> loadCart() async {
-  if (userId.isEmpty) return;
-
-  try {
-    final snapshot = await _firestore.collection("users").doc(userId).collection("cart").get();
-
-    _cart = snapshot.docs.map((doc) {
-      final data = doc.data();
-      return {
-        "id": doc.id,
-        "name": data["name"] ?? "Unknown Product",
-        "price": data["price"] ?? "0.0",
-        "image": data["image"] ?? "",
-        "size": data["size"] ?? "S",
-        "quantity": data["quantity"] ?? 1, 
-        "totalPrice": data["totalPrice"] ?? "0.0"
-      };
-    }).toList();
-
-    notifyListeners();
-  } catch (e) {
-    print("Error loading cart: $e");
-  }
 }
 
-
-  
-}
