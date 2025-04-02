@@ -14,6 +14,15 @@ class UserProvider extends ChangeNotifier {
   String get userName => _userName;
   List<Map<String, dynamic>> get cart => _cart;
 
+  List<Map<String, dynamic>> _addresses = [];
+
+  List<Map<String, dynamic>> get addresses => _addresses;
+
+  String _phoneNumber = "";
+
+String get phoneNumber => _phoneNumber;
+
+
   void setUsername(String username) {
     _userName = username;
     notifyListeners();
@@ -112,5 +121,108 @@ class UserProvider extends ChangeNotifier {
       print("Error removing item from cart: $e");
     }
   }
+  Future<void> loadAddresses() async {
+    if (userId.isEmpty) return;
+
+    try {
+      QuerySnapshot snapshot = await _firestore
+          .collection("users")
+          .doc(userId)
+          .collection("addresses")
+          .get();
+
+      _addresses = snapshot.docs.map((doc) {
+        return {
+          "id": doc.id,
+          "name": doc["name"],
+          "address": doc["address"],
+          "phone": doc["phone"],
+          "pincode": doc["pincode"],
+        };
+      }).toList();
+
+      notifyListeners();
+    } catch (e) {
+      print("Error loading addresses: $e");
+    }
+  }
+
+  /// Add address to Firestore
+  Future<void> addAddress(Map<String, String> newAddress) async {
+    if (userId.isEmpty) return;
+
+    try {
+      DocumentReference docRef = await _firestore
+          .collection("users")
+          .doc(userId)
+          .collection("addresses")
+          .add(newAddress);
+
+      _addresses.add({...newAddress, "id": docRef.id});
+      notifyListeners();
+    } catch (e) {
+      print("Error adding address: $e");
+    }
+  }
+
+  Future<void> updateAddress(Map<String, dynamic> updatedAddress) async {
+  if (userId.isEmpty) return;
+
+  try {
+    // 🔥 Update Firestore
+    await _firestore
+        .collection("users")
+        .doc(userId)
+        .collection("addresses")
+        .doc(updatedAddress["id"])
+        .update({
+      "name": updatedAddress["name"],
+      "address": updatedAddress["address"],
+      "phone": updatedAddress["phone"],
+      "pincode": updatedAddress["pincode"],
+    });
+
+    // 🔄 Update local list
+    final index = _addresses.indexWhere((addr) => addr["id"] == updatedAddress["id"]);
+    if (index != -1) {
+      _addresses[index] = updatedAddress;
+      notifyListeners(); // Refresh UI
+    } else {
+      print("Address ID not found!");
+    }
+  } catch (e) {
+    print("Error updating address: $e");
+  }
 }
+
+
+
+
+
+
+
+  /// Remove address from Firestore
+  Future<void> removeAddress(String addressId) async {
+    if (userId.isEmpty) return;
+
+    try {
+      await _firestore
+          .collection("users")
+          .doc(userId)
+          .collection("addresses")
+          .doc(addressId)
+          .delete();
+
+      _addresses.removeWhere((address) => address["id"] == addressId);
+      notifyListeners();
+    } catch (e) {
+      print("Error deleting address: $e");
+    }
+  }
+
+  
+}
+
+  
+
 

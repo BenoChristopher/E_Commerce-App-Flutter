@@ -202,24 +202,7 @@ class _UploadProductState extends State<UploadProduct> {
               MyTextField(hintText: 'Ex: \$400', obsecurText: false, controller: productPriceController, icon: Icon(Icons.attach_money)),
               SizedBox(height: 20),
 
-              /// Category Dropdown
-              // Text('Select Product Category', style: GoogleFonts.inter(fontSize: 16, fontWeight: FontWeight.w500)),
-              // SizedBox(height: 6),
-              // Container(
-              //   padding: EdgeInsets.only(left: 10),
-              //   decoration: BoxDecoration(border: Border.all(), borderRadius: BorderRadius.circular(8)),
-              //   child: DropdownButton<String>(
-              //     underline: SizedBox(),
-              //     isExpanded: true,
-              //     items: categories.map((category) => DropdownMenuItem(value: category, child: Text(category, style: GoogleFonts.inter(fontSize: 16)))).toList(),
-              //     onChanged: (value) => setState(() => selectedCategory = value),
-              //     hint: Text('Select Category', style: GoogleFonts.inter(fontSize: 16)),
-              //     value: selectedCategory,
-              //   ),
-              // ),
-              // SizedBox(height: 20),
-
-              /// Product Description
+             
               Text('Enter Product Description', style: GoogleFonts.inter(fontSize: 16, fontWeight: FontWeight.w500)),
               SizedBox(height: 6),
               TextField(

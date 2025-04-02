@@ -134,14 +134,14 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(widget.name, style: GoogleFonts.inter(fontSize: 24, fontWeight: FontWeight.w600)),
+                Text(widget.name, style: GoogleFonts.blinker(fontSize: 24, fontWeight: FontWeight.w600)),
                    SizedBox(height: 16),
-                 Text(widget.description, style: GoogleFonts.inter(fontSize: 16, fontWeight: FontWeight.w300)),
+                 Text(widget.description, style: GoogleFonts.blinker(fontSize: 16, fontWeight: FontWeight.w300)),
 
                 SizedBox(height: 16),
 
                 
-                Text("Select Size:", style: GoogleFonts.inter(fontSize: 16, fontWeight: FontWeight.bold)),
+                Text("Select Size:", style: GoogleFonts.blinker(fontSize: 16, fontWeight: FontWeight.bold)),
                 SizedBox(height: 16),
                
                 Container(
@@ -177,11 +177,11 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text('MRP:', style: GoogleFonts.inter(fontSize: 16, fontWeight: FontWeight.w400)),
+                    Text('MRP:', style: GoogleFonts.blinker(fontSize: 16, fontWeight: FontWeight.w400)),
                     SizedBox(width: 8),
                     Text(
                       "\$ ${totalPrice.toStringAsFixed(0)}",
-                      style: GoogleFonts.inter(fontSize: 16, fontWeight: FontWeight.w800),
+                      style: GoogleFonts.blinker(fontSize: 16, fontWeight: FontWeight.w800),
                     ),
                   ],
                 ),
@@ -209,11 +209,11 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                 });
                               }
                             },
-                            child: Text('-', style: GoogleFonts.inter(fontSize: 18, fontWeight: FontWeight.bold)),
+                            child: Text('-', style: GoogleFonts.blinker(fontSize: 18, fontWeight: FontWeight.bold)),
                           ),
                           Text(
                             quantity.toString(),
-                            style: GoogleFonts.inter(fontSize: 18, fontWeight: FontWeight.bold, color: primecolor),
+                            style: GoogleFonts.blinker(fontSize: 18, fontWeight: FontWeight.bold, color: primecolor),
                           ),
                           GestureDetector(
                             onTap: () {
@@ -221,7 +221,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                 quantity++;
                               });
                             },
-                            child: Text('+', style: GoogleFonts.inter(fontSize: 18, fontWeight: FontWeight.bold)),
+                            child: Text('+', style: GoogleFonts.blinker(fontSize: 18, fontWeight: FontWeight.bold)),
                           ),
                         ],
                       ),

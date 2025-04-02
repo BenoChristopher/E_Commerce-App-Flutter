@@ -148,7 +148,7 @@ class _ProductPageState extends State<ProductPage> {
                                       child: Text(
                                         ds["Name"],
                                         maxLines: 1,
-                                        style: GoogleFonts.inter(
+                                        style: GoogleFonts.blinker(
                                           
                                           fontSize: 15,
                                           color: Colors.black,
@@ -158,7 +158,7 @@ class _ProductPageState extends State<ProductPage> {
                                     ),
                                     Text(
                                       "\$" + ds["Price"],
-                                      style: GoogleFonts.inter(
+                                      style: GoogleFonts.blinker(
                                         fontSize: 14,
                                         color: Colors.black,
                                         fontWeight: FontWeight.w600,
@@ -229,7 +229,7 @@ class _ProductPageState extends State<ProductPage> {
                         // width: MediaQuery.of(context).size.width * 0.8,
                         child: Text(
                           'Hello, ${userProvider.userName}',
-                          style: GoogleFonts.inter(
+                          style: GoogleFonts.blinker(
                             fontSize: 20,
                             color: Colors.black,
                             fontWeight: FontWeight.w600,
@@ -254,7 +254,7 @@ class _ProductPageState extends State<ProductPage> {
             ),
             Text(
               "Lets start shopping",
-              style: GoogleFonts.inter(fontSize: 12, color: Colors.grey[700]),
+              style: GoogleFonts.blinker(fontSize: 12, color: Colors.grey[700]),
             ),
             SizedBox(height: 20),
             Container(
@@ -269,7 +269,7 @@ class _ProductPageState extends State<ProductPage> {
                   decoration: InputDecoration(
                       border: InputBorder.none,
                       hintText: 'Search for products',
-                      hintStyle: GoogleFonts.inter(
+                      hintStyle: GoogleFonts.blinker(
                           color: Colors.grey.shade700,
                           fontSize: 16,
                           fontWeight: FontWeight.w500),
@@ -286,7 +286,7 @@ class _ProductPageState extends State<ProductPage> {
               children: [
                 Text(
                   'Categories',
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.blinker(
                     fontSize: 20,
                     color: Colors.black,
                     fontWeight: FontWeight.w600,
@@ -294,7 +294,7 @@ class _ProductPageState extends State<ProductPage> {
                 ),
                 Text(
                   'see all',
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.blinker(
                     fontSize: 16,
                     color: primecolor,
                     fontWeight: FontWeight.w400,
@@ -314,7 +314,7 @@ class _ProductPageState extends State<ProductPage> {
               height: 20,
             ),
             Text('Featured products',
-                style: GoogleFonts.inter(
+                style: GoogleFonts.blinker(
                   fontSize: 20,
                   color: Colors.black,
                   fontWeight: FontWeight.w600,

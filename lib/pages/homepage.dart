@@ -18,15 +18,10 @@ class MyHomePage extends StatefulWidget {
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 
-  // String userName = "";
+ 
 }
 
-// List pages = [
-//   {
-//     '/homepage': MyHomePage(),
-//     '/cartpage':MyCart()
-//   }
-// ];
+
 
 var primecolor = const Color(0xFF00c7e7);
 
@@ -55,6 +50,9 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  List<String> titles = ["Home", "Cart", "Profile"];
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,6 +61,13 @@ class _MyHomePageState extends State<MyHomePage> {
         child: MyDrawer(),
       ),
       appBar: AppBar(
+        title: Text(
+            titles[currentPage],
+          style: GoogleFonts.blinker(
+            fontWeight: FontWeight.bold,
+            //color: Colors.grey[700],
+          ),
+        ),
        
         actions: [
         IconButton(onPressed: () {}, icon: Icon(Icons.favorite_rounded)),
@@ -70,17 +75,29 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     
       
-      bottomNavigationBar: MyBottomNavBar(
-        onPageSelected: onPageSelected,
-        currentPage: currentPage, 
-      ),
+      // bottomNavigationBar: MyBottomNavBar(
+      //   onPageSelected: onPageSelected,
+      //   currentPage: currentPage, 
+      // ),
+      bottomNavigationBar: BottomNavigationBar(
+  currentIndex: currentPage,
+  onTap: onPageSelected,
+  selectedItemColor: primecolor,  // Highlighted color
+  unselectedItemColor: Colors.grey,
+  items: [
+    BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+    BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: "Cart"),
+    BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
+  ],
+),
+
       body: IndexedStack(
         index: currentPage,
         children: [
           ProductPage(),
          
           MyCart(),
-           MyProfile(text: "Profile Page 👾",),
+           MyProfile(),
         ],
       ),
     );

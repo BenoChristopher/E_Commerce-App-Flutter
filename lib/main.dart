@@ -41,8 +41,7 @@ class MyApp extends StatelessWidget {
        
       debugShowCheckedModeBanner: false,
       home: 
-      //ProductDetailPage(), 
-      //Uploadproduct(),
+     
       MySplashScreen(),
 
       //UiCard(),

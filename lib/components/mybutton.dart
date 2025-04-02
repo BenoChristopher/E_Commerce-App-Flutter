@@ -39,7 +39,7 @@ class MyButton extends StatelessWidget {
             SizedBox(width: 5,)
             
              ,Text(buttonname,
-          style: GoogleFonts.inter
+          style: GoogleFonts.blinker
           
             //blinker
             (fontWeight: FontWeight.bold, fontSize: 16,color: textcolor),
